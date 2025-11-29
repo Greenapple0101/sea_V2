@@ -40,12 +40,12 @@ services:
       - "${BE_PORT:-8080}:8080"
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-sca_db}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-      DB_USERNAME: ${MYSQL_USER:-sca_user}
-      DB_PASSWORD: ${MYSQL_PASSWORD:-sca_password}
-      JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
-      JWT_EXPIRATION: ${JWT_EXPIRATION:-3600000}
-      JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION:-86400000}
+      DB_URL: ${DB_URL:-jdbc:mysql://172.31.8.124:3306/sca_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
+      DB_USERNAME: ${DB_USERNAME:-sca_user}
+      DB_PASSWORD: ${DB_PASSWORD:-scaStrong#2025!}
+      JWT_SECRET: ${JWT_SECRET:-eLZ3lC2C5H84Y2hpvzI8tqX2lhqE9DkHYzqJ4yKpXqj5Rk1B1xw4m3wqf8sYv7Fo2QkLx9Hs2zqN7fDzJ3Rfsg==}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-900000}
+      JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION:-604800000}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
       AWS_SECRET_KEY: ${AWS_SECRET_KEY}
@@ -72,7 +72,7 @@ services:
     networks:
       - sca-network
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost/ || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
