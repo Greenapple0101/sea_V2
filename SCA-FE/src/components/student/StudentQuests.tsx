@@ -317,11 +317,11 @@ export function StudentQuests() {
             <div style={{ display: "flex", gap: "10px" }}>
               <div className="sunken-panel" style={{ flex: 1, padding: "10px", textAlign: "center", background: "var(--color-white)" }}>
                 <p style={{ margin: 0, fontSize: "12px", color: "#666" }}>코랄</p>
-                <p style={{ margin: "5px 0 0 0", fontSize: "18px", fontWeight: "bold" }}>{currentUser.coral}</p>
+                <p style={{ margin: "5px 0 0 0", fontSize: "18px", fontWeight: "bold" }}>{(currentUser.coral ?? 0).toLocaleString()}</p>
               </div>
               <div className="sunken-panel" style={{ flex: 1, padding: "10px", textAlign: "center", background: "var(--color-white)" }}>
                 <p style={{ margin: 0, fontSize: "12px", color: "#666" }}>탐사데이터</p>
-                <p style={{ margin: "5px 0 0 0", fontSize: "18px", fontWeight: "bold" }}>{currentUser.research_data}</p>
+                <p style={{ margin: "5px 0 0 0", fontSize: "18px", fontWeight: "bold" }}>{(currentUser.research_data ?? 0).toLocaleString()}</p>
               </div>
             </div>
           </div>
