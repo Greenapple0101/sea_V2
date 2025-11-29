@@ -11,9 +11,9 @@ interface Fish {
   fish_id: number;
   fish_name: string;
   grade: 'COMMON' | 'RARE' | 'LEGENDARY';
-  is_new: boolean;
+  is_new?: boolean;
   current_count: number;
-  image_url: string;
+  image_url?: string;
 }
 
 const BASE_SPRITE_SIZE = 24;
@@ -108,10 +108,20 @@ export function StudentGacha() {
         // 가챠 뽑기 로직
         if (result.success) {
           // 가챠 성공
-          setResultFish(result.data.drawn_fish);
+          const drawnFish = result.data.drawn_fish;
+          console.log('Gacha result:', result.data);
+          console.log('Drawn fish:', drawnFish);
+          console.log('Fish name:', drawnFish?.fish_name);
+          
+          // 데이터 검증 및 정리
+          if (drawnFish) {
+            setResultFish({
+              ...drawnFish,
+              fish_name: drawnFish.fish_name || '알 수 없는 물고기'
+            });
+          }
           setStudentCoral(result.data.remaining_coral); // 남은 코랄 업데이트
           setIsResultOpen(true);
-          console.log('Gacha result:', result.data);
         } else {
           // 가챠 실패 (예: 코랄 부족)
           if (result.error_code === 'INSUFFICIENT_CORAL') {
