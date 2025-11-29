@@ -471,7 +471,7 @@ export function StudentRaid() {
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <span style={{ fontSize: "13px" }}>
                           <strong style={{ color: "#000080" }}>{log.student_name}</strong>님이
-                          <span style={{ color: "#d32f2f", fontWeight: "bold", marginLeft: "4px" }}>{log.damage.toLocaleString()}</span> 대미지를 입혔습니다!
+                          <span style={{ color: "#d32f2f", fontWeight: "bold", marginLeft: "4px" }}>{log.damage.toLocaleString()}</span> 데미지를 입혔습니다!
                         </span>
                         <span style={{ fontSize: "11px", color: "#666" }}>{formatLogTime(log.timestamp)}</span>
                       </div>

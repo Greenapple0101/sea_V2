@@ -99,7 +99,7 @@ CREATE TABLE quests (
   reward_coral_default INT DEFAULT 0, -- 코랄 보상
   reward_research_data_default INT DEFAULT 0, -- 탐사데이터 보상
   deadline DATETIME, -- 마감일
-  difficulty ENUM('EASY', 'BASIC', 'MEDIUM', 'HARD', 'VERY_HARD'), -- 난이도
+  difficulty INT, -- 난이도 (1=EASY, 2=BASIC, 3=MEDIUM, 4=HARD, 5=VERY_HARD)
   deleted_at DATETIME DEFAULT NULL, -- Soft Delete
   PRIMARY KEY (quest_id)
 );
@@ -183,7 +183,7 @@ CREATE TABLE contributions (
   contribution_id INT NOT NULL AUTO_INCREMENT, -- Primary Key
   raid_id INT NOT NULL, -- 레이드 id
   student_id INT NOT NULL, -- 학생 id
-  damage INT NOT NULL DEFAULT 0, -- 대미지
+  damage INT NOT NULL DEFAULT 0, -- 데미지
   last_attack_at DATETIME DEFAULT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- 테이블 생성 시간
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- 마지막 기여 시간

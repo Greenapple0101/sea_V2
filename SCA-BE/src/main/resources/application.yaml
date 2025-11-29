@@ -5,6 +5,11 @@ spring:
     port: 8080
   profiles:
     default: dev
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
   servlet:
     multipart:
       enabled: true
