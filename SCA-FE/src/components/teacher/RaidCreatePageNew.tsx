@@ -442,7 +442,7 @@ export function RaidCreatePageNew() {
                 <div className="flex gap-4">
                   <Button
                     variant="outline"
-                    className="flex-1 py-6 text-base border-2"
+                    className="flex-1 py-2 text-sm border-2"
                     onClick={() => navigate('/teacher/dashboard')}
                   >
                     취소
@@ -450,7 +450,7 @@ export function RaidCreatePageNew() {
                   <Button
                     onClick={handleSubmit}
                     disabled={!canCreate || submitting}
-                    className="flex-[2] py-6 text-base bg-black hover:bg-gray-800 text-white disabled:bg-gray-300"
+                    className="flex-[2] py-2 text-sm bg-black hover:bg-gray-800 text-white disabled:bg-gray-300"
                   >
                     {submitting ? '생성 중...' : '레이드 생성하기'}
                   </Button>

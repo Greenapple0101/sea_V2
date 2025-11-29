@@ -94,4 +94,19 @@ public class AuthController {
                 .status(HttpStatus.OK)
                 .body(ApiResponse.success(response));
     }
+
+    // 7. 선생님 프로필 조회
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('TEACHER')")
+    public ResponseEntity<ApiResponse<TeacherProfileResponse>> getTeacherProfile(
+            Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Integer memberId = userDetails.getMemberId(); // 로그인 사용자 = Member ID
+        
+        TeacherProfileResponse response = authService.getTeacherProfile(memberId);
+        
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response));
+    }
 }

@@ -170,6 +170,20 @@ public class PersonalQuestController {
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
+    /**
+     * 11. 학생별 퀘스트 목록 조회 (선생님용)
+     */
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<ApiResponse<MyQuestListResponse>> getStudentQuests(
+            Authentication authentication,
+            @PathVariable("studentId") Integer studentId) {
+
+        Integer teacherId = getTeacherId(authentication);
+        MyQuestListResponse response = personalQuestService.getStudentQuests(teacherId, studentId);
+
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
     // Helper methods
     private Integer getTeacherId(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();

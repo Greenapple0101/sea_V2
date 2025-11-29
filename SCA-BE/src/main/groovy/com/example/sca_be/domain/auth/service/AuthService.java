@@ -289,6 +289,24 @@ public class AuthService {
                 .build();
     }
 
+    // 6. 선생님 프로필 조회
+    public TeacherProfileResponse getTeacherProfile(Integer memberId) {
+        Teacher teacher = teacherRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.TEACHER_NOT_FOUND));
+
+        Member member = teacher.getMember();
+
+        return TeacherProfileResponse.builder()
+                .teacherId(teacher.getMemberId())
+                .username(member.getUsername())
+                .realName(member.getRealName())
+                .nickname(member.getNickname())
+                .email(member.getEmail())
+                .role("ROLE_" + member.getRole().name())
+                .createdAt(member.getCreatedAt() != null ? member.getCreatedAt().toString() : null)
+                .build();
+    }
+
     // 5. 로그아웃 (현재는 클라이언트에서 토큰 삭제만 하면 됨)
     @Transactional
     public void logout(LogoutRequest request) {

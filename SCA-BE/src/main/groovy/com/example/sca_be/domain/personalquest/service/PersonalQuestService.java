@@ -658,6 +658,32 @@ public class PersonalQuestService {
     }
 
     /**
+     * 선생님이 특정 학생의 퀘스트 목록 조회
+     */
+    public MyQuestListResponse getStudentQuests(Integer teacherId, Integer studentId) {
+        // 권한 체크: 해당 학생이 선생님의 반에 속해있는지 확인
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new CustomException(ErrorCode.STUDENT_NOT_FOUND));
+
+        if (student.getClasses() == null || 
+            !student.getClasses().getTeacher().getMemberId().equals(teacherId)) {
+            throw new CustomException(ErrorCode.CLASS_ACCESS_DENIED);
+        }
+
+        // 진행 중인 퀘스트 (ASSIGNED 상태)
+        List<QuestStatus> activeStatuses = Arrays.asList(QuestStatus.ASSIGNED);
+        List<QuestAssignment> activeQuests = questAssignmentRepository.findByStudentAndStatusIn(
+                studentId, activeStatuses);
+
+        return MyQuestListResponse.builder()
+                .activeQuests(convertToQuestItems(activeQuests))
+                .expiredQuests(new ArrayList<>())
+                .approvedQuests(new ArrayList<>())
+                .totalCount(activeQuests.size())
+                .build();
+    }
+
+    /**
      * 퀘스트 제출
      */
     @Transactional
