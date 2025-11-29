@@ -223,11 +223,14 @@ export function StudentQuests() {
           }
 
           const uploadData = await uploadResponse.json();
-          console.log('[퀘스트 제출] 파일 업로드 응답:', uploadData);
+          console.log('[퀘스트 제출] 파일 업로드 응답 전체:', JSON.stringify(uploadData, null, 2));
 
           if (uploadData.success && uploadData.data?.url) {
             attachmentUrl = uploadData.data.url;
             console.log('[퀘스트 제출] 파일 업로드 성공, URL:', attachmentUrl);
+            console.log('[퀘스트 제출] URL 타입:', typeof attachmentUrl);
+            console.log('[퀘스트 제출] URL 길이:', attachmentUrl?.length);
+            console.log('[퀘스트 제출] URL 유효성 검사:', /^https?:\/\/.+/.test(attachmentUrl));
           } else {
             console.error('[퀘스트 제출] 파일 업로드 응답 형식 오류:', uploadData);
             throw new Error('파일 업로드 응답이 올바르지 않습니다.');
@@ -242,23 +245,24 @@ export function StudentQuests() {
 
       // 퀘스트 제출
       const payload = {
-        content: submitText,
-        attachment_url: attachmentUrl
+        content: submitText || null,
+        attachment_url: attachmentUrl || null
       };
 
-      console.log('[퀘스트 제출] 제출 요청:', {
+      console.log('[퀘스트 제출] 제출 요청 전체:', {
         endpoint,
         method,
-        payload: { ...payload, attachment_url: attachmentUrl ? `${attachmentUrl.substring(0, 50)}...` : null }
+        payload: JSON.parse(JSON.stringify(payload)) // 순환 참조 방지
       });
 
-      const response = await apiCall(endpoint, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload)
-      });
+      try {
+        const response = await apiCall(endpoint, {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload)
+        });
 
       console.log('[퀘스트 제출] 제출 응답 상태:', response.status);
 
