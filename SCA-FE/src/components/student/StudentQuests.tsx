@@ -179,6 +179,12 @@ export function StudentQuests() {
         const file = attachedFiles[0];
         const fileType = file.type;
 
+        console.log('[퀘스트 제출] 첨부파일 업로드 시작:', {
+          fileName: file.name,
+          fileType: fileType,
+          fileSize: file.size
+        });
+
         // 파일 타입에 따라 적절한 엔드포인트 선택
         let uploadEndpoint: string;
         let formDataKey: string;
@@ -194,27 +200,43 @@ export function StudentQuests() {
           formDataKey = 'file';
         }
 
+        console.log('[퀘스트 제출] 업로드 엔드포인트:', uploadEndpoint);
+
         // 파일 업로드
         const uploadFormData = new FormData();
         uploadFormData.append(formDataKey, file);
 
-        const uploadResponse = await apiCall(uploadEndpoint, {
-          method: 'POST',
-          headers: {}, // FormData는 Content-Type을 자동으로 설정
-          body: uploadFormData as any, // FormData는 직접 전달
-        });
+        try {
+          const uploadResponse = await apiCall(uploadEndpoint, {
+            method: 'POST',
+            headers: {}, // FormData는 Content-Type을 자동으로 설정
+            body: uploadFormData as any, // FormData는 직접 전달
+          });
 
-        if (!uploadResponse.ok) {
-          const uploadError = await uploadResponse.json();
-          throw new Error(uploadError.message || '파일 업로드에 실패했습니다.');
-        }
+          console.log('[퀘스트 제출] 파일 업로드 응답 상태:', uploadResponse.status);
 
-        const uploadData = await uploadResponse.json();
-        if (uploadData.success && uploadData.data?.url) {
-          attachmentUrl = uploadData.data.url;
-        } else {
-          throw new Error('파일 업로드 응답이 올바르지 않습니다.');
+          if (!uploadResponse.ok) {
+            const uploadError = await uploadResponse.json();
+            console.error('[퀘스트 제출] 파일 업로드 실패:', uploadError);
+            throw new Error(uploadError.message || '파일 업로드에 실패했습니다.');
+          }
+
+          const uploadData = await uploadResponse.json();
+          console.log('[퀘스트 제출] 파일 업로드 응답:', uploadData);
+
+          if (uploadData.success && uploadData.data?.url) {
+            attachmentUrl = uploadData.data.url;
+            console.log('[퀘스트 제출] 파일 업로드 성공, URL:', attachmentUrl);
+          } else {
+            console.error('[퀘스트 제출] 파일 업로드 응답 형식 오류:', uploadData);
+            throw new Error('파일 업로드 응답이 올바르지 않습니다.');
+          }
+        } catch (uploadErr) {
+          console.error('[퀘스트 제출] 파일 업로드 중 예외:', uploadErr);
+          throw uploadErr;
         }
+      } else {
+        console.log('[퀘스트 제출] 첨부파일 없음');
       }
 
       // 퀘스트 제출
@@ -223,6 +245,12 @@ export function StudentQuests() {
         attachment_url: attachmentUrl
       };
 
+      console.log('[퀘스트 제출] 제출 요청:', {
+        endpoint,
+        method,
+        payload: { ...payload, attachment_url: attachmentUrl ? `${attachmentUrl.substring(0, 50)}...` : null }
+      });
+
       const response = await apiCall(endpoint, {
         method: method,
         headers: {
@@ -230,6 +258,8 @@ export function StudentQuests() {
         },
         body: JSON.stringify(payload)
       });
+
+      console.log('[퀘스트 제출] 제출 응답 상태:', response.status);
 
       const data = await response.json();
       
