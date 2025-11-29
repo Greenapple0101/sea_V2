@@ -251,7 +251,6 @@ public class PersonalQuestService {
      * AI 보상 추천
      * PDF 1.2 참고: CompletableFuture로 병렬 처리
      */
-    @Transactional
     public AIRecommendResponse recommendRewards(AIRecommendRequest request) {
         log.info("AI reward recommendation started for {} students", request.getStudentIds().size());
 

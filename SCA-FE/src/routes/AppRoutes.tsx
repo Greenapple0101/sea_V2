@@ -100,7 +100,7 @@ const TeacherLayout: React.FC = () => {
   return (
     <div className="window min-h-screen" style={{ margin: '20px', width: 'calc(100% - 40px)', height: 'calc(100vh - 40px)' }}>
       <div className="title-bar">
-        <div className="title-bar-text">SCA 선생님 대시보드</div>
+        <div className="title-bar-text">선생님 대시보드</div>
         <div className="title-bar-controls">
           <button aria-label="Minimize"></button>
           <button aria-label="Maximize"></button>
@@ -124,7 +124,6 @@ export const AppRoutes: React.FC = () => {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<RoleSelection />} />
-        <Route path="/role-selection" element={<RoleSelection />} />
         <Route path="/login/:role" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
 
